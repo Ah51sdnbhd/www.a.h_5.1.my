@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web ujicoba 2.0.1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f1014;
+            --card-bg-color: #1c1d24;
+            --primary-text-color: #e2e2e2;
+            --secondary-text-color: #9a9a9a;
+            --accent-gradient: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
+            --accent-color-1: #6a82fb;
+            --accent-color-2: #fc5c7d;
+            --accent-glow: rgba(106, 130, 251, 0.4);
+            --break-bg-color: rgba(106, 130, 251, 0.05);
+            --event-bg-color: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-color-1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-color-2); }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text-color);
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+
+        .header-container { text-align: center; margin-bottom: 50px; }
+        h1 {
+            background: var(--accent-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        h2 { color: var(--secondary-text-color); font-size: 1.2em; font-weight: 300; margin-top: 5px; letter-spacing: 0.5px; }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 30px; width: 100%; max-width: 1900px;
+        }
+
+        .day-card {
+            background-color: var(--card-bg-color);
+            border-radius: 20px; border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .day-card:hover { transform: translateY(-8px); border-color: var(--accent-glow); box-shadow: 0 0 30px var(--accent-glow); }
+
+        .day-header {
+            background: var(--accent-gradient); color: white;
+            padding: 18px 25px; font-size: 1.6em; font-weight: 600; text-align: center;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .schedule-items { padding: 15px 0; }
+        .schedule-item {
+            padding: 18px 25px; border-bottom: 1px solid var(--border-color);
+            display: flex; gap: 20px; align-items: center;
+        }
+        .schedule-items > div:last-child { border-bottom: none; }
+
+        .schedule-item .icon { flex-shrink: 0; }
+        .schedule-item .icon svg { width: 24px; height: 24px; fill: var(--accent-color-1); }
+
+        .schedule-item .details { display: flex; flex-direction: column; width: 100%; }
+        .time-subject-wrapper { display: flex; justify-content: space-between; align-items: flex-start; }
+        .schedule-item .time { font-weight: 600; color: var(--primary-text-color); font-size: 1em; text-align: right; flex-shrink: 0; }
+        .schedule-item .subject { font-weight: 600; font-size: 1.1em; color: var(--primary-text-color); }
+        .schedule-item .teacher, .schedule-item .jp-info { font-size: 0.9em; color: var(--secondary-text-color); font-weight: 300; }
+        .schedule-item .jp-info { text-align: right; }
+
+        /* Item Type Variations */
+        .break-item { background-color: var(--break-bg-color); }
+        .break-item .subject { color: var(--accent-color-2); font-style: italic; }
+        .break-item .icon svg { fill: var(--accent-color-2); }
+        
+        .event-item { background-color: var(--event-bg-color); }
+        .event-item .subject { color: var(--secondary-text-color); font-style: italic; font-weight: 400; }
+        .event-item .icon svg { fill: var(--secondary-text-color); }
+
+        footer { margin-top: 50px; color: var(--secondary-text-color); font-size: 0.9em; text-align: center; font-weight: 300; }
+
+        @media (max-width: 768px) {
+            body { padding: 20px; }
+            h1 { font-size: 2.2em; }
+            h2 { font-size: 1em; }
+            .schedule-grid { grid-template-columns: 1fr; }
+            .time-subject-wrapper { flex-direction: column; align-items: flex-start; gap: 4px; }
+            .schedule-item .time { order: -1; font-size: 0.9em; color: var(--secondary-text-color); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-container">
+        <h1>Jadwal Pelajaran Kelas X TE 2</h1>
+        <h2>SMK Negeri 1 Semarang - Semester Gasal TA 2025/2026</h2>
+    </header>
+
+    <main class="schedule-grid">
+        <!-- SVG Icons Definition -->
+        <svg width="0" height="0" style="display:none;">
+            <symbol id="icon-book" viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></symbol>
+            <symbol id="icon-coffee" viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.9 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></symbol>
+            <symbol id="icon-flag" viewBox="0 0 24 24"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z"/></symbol>
+            <symbol id="icon-clock" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></symbol>
+            <symbol id="icon-mosque" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 7h2v5h-2zm0 6h2v2h-2z"/></symbol>
+        </svg>
+
+        <!-- Senin -->
+        <article class="day-card">
+            <h3 class="day-header">Senin</h3>
+            <div class="schedule-items">
+                <div class="schedule-item event-item"><div class="icon"><svg><use xlink:href="#icon-flag"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Upacara Bendera</div><div class="time">07.00 - 07.45</div></div><div class="jp-info">JP ke-1</div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">07.45 - 09.15</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div><div class="jp-info">JP ke-2 & 3</div></div></div>
+                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">09.30 - 10.15</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div><div class="jp-info">JP ke-4</div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">10.15 - 11.45</div></div><div class="teacher">Abdul Muin, S.Pd.I</div><div class="jp-info">JP ke-5 & 6</div></div></div>
+                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">12.15 - 13.00</div></div><div class="teacher">Abdul Muin, S.Pd.I</div><div class="jp-info">JP ke-7</div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Inggris</div><div class="time">13.00 - 15.15</div></div><div class="teacher">Sri Eny Sumiarti L.E.K, S.Pd, M.Si.</div><div class="jp-info">JP ke-8, 9 & 10</div></div></div>
+            </div>
+        </article>
+
+        <!-- Selasa -->
+        <article class="day-card">
+            <h3 class="day-header">Selasa</h3>
+            <div class="schedule-items">
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Inggris</div><div class="time">07.00 - 08.30</div></div><div class="teacher">Sri Eny Sumiarti L.E.K, S.Pd, M.Si.</div><div class="jp-info">JP ke-1 & 2</div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Indonesia</div><div class="time">08.30 - 09.15</div></div><div class="teacher">Dra. Harmiati Erstiningrum</div><div class="jp-info">JP ke-3</div></div></div>
+                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Indonesia</div><div class="time">09.30 - 11.00</div></div><div class="teacher">Dra. Harmiati Erstiningrum</div><div class="jp-info">JP ke-4 & 5</div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">11.00 - 11.45</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div><div class="jp-info">JP ke-6</div></div></div>
+                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">12.15 - 13.00</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div><div class="jp-info">JP ke-7</div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Matematika</div><div class="time">13.00 - 15.15</div></div><div class="teacher">Kusriyantini, S.Pd</div><div class="jp-info">JP ke-8, 9 & 10</div></div></div>
+            </div>
+        </article>
+
+        <!-- Rabu -->
+        <article class="day-card">
+            <h3 class="day-header">Rabu</h3>
+            <div class="schedule-items">
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Sejarah Indonesia</div><div class="time">07.00 - 08.30</div></div><div class="teacher">Saydah Ak'la, S.Pd.</div><div class="jp-info">JP ke-1 & 2</div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">08.30 - 09.15</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div><div class="jp-info">JP ke-3</div></div></div>
+                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">09.30 - 10.15</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div><div class="jp-info">JP ke-4</div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">10.15 - 11.45</div></div><div class="teacher">Abdul Muin, S.Pd.I</div><div class="jp-info">JP ke-5 & 6</div></div></div>
+                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">12.15 - 13.00</div></div><div class="teacher">Abdul Muin, S.Pd.I</div><div class="jp-info">JP ke-7</div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">13.00 - 15.15</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div><div class="jp-info">JP ke-8, 9 & 10</div></div></div>
+            </div>
+        </article>
+        
+        <!-- Kamis -->
+        <article class="day-card">
+            <h3 class="day-header">Kamis</h3>
+            <div class="schedule-items">
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Indonesia</div><div class="time">07.00 - 09.15</div></div><div class="teacher">Dra. Harmiati Erstiningrum</div><div class="jp-info">JP ke-1, 2 & 3</div></div></div>
+                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Inggris</div><div class="time">09.30 - 11.45</div></div><div class="teacher">Sri Eny Sumiarti L.E.K, S.Pd, M.Si.</div><div class="jp-info">JP ke-4, 5 & 6</div></div></div>
+                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Matematika</div><div class="time">12.15 - 15.15</div></div><div class="teacher">Kusriyantini, S.Pd</div><div class="jp-info">JP ke-7, 8, 9 & 10</div></div></div>
+            </div>
+        </article>
+
+        <!-- Jumat -->
+        <article class="day-card">
+            <h3 class="day-header">Jumat</h3>
+            <div class="schedule-items">
+                <div class="schedule-item event-item"><div class="icon"><svg><use xlink:href="#icon-clock"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">data not found!</div><div class="time">07.00 - 08.00</div></div><div class="jp-info">JP ke-1</div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Sejarah Indonesia</div><div class="time">08.00 - 09.20</div></div><div class="teacher">Saydah Ak'la, S.Pd.</div><div class="jp-info">JP ke-2 & 3</div></div></div>
+                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.20 - 09.40</div></div></div></div>
+                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">09.40 - 11.40</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div><div class="jp-info">JP ke-4, 5 & 6</div></div></div>
+                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-mosque"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">sholat Jumat</div><div class="time">11.40 - 12.30</div></div></div></div>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 A.H 5.1 all rights reserved.</p>
+    </footer>
+
+</body>
+</html>
