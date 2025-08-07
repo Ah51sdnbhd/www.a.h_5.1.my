@@ -3,199 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>web ujicoba 2.0.1</title>
+    <title>Jadwal Elegan (MODERN) - Kelas X TE 2</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f1014;
-            --card-bg-color: #1c1d24;
-            --primary-text-color: #e2e2e2;
-            --secondary-text-color: #9a9a9a;
-            --accent-gradient: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
-            --accent-color-1: #6a82fb;
-            --accent-color-2: #fc5c7d;
-            --accent-glow: rgba(106, 130, 251, 0.4);
-            --break-bg-color: rgba(106, 130, 251, 0.05);
-            --event-bg-color: rgba(255, 255, 255, 0.03);
-            --border-color: rgba(255, 255, 255, 0.08);
+            /* Tema Gelap Modern (Default) */
+            --bg-color: #0D1117;
+            --card-bg-color: rgba(30, 36, 44, 0.6);
+            --search-bg-color: rgba(13, 17, 23, 0.8);
+            --primary-text-color: #c9d1d9;
+            --secondary-text-color: #8b949e;
+            --border-color: rgba(255, 255, 255, 0.15);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --accent-gradient: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
+            --accent-color-1: #58a6ff;
+            --accent-color-2: #ff7b72;
+            --highlight-gradient: linear-gradient(135deg, hsla(212, 98%, 55%, 0.851) 0%, hsla(212, 100%, 67%, 0.849) 100%);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: var(--accent-color-1); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent-color-2); }
+        html.light {
+            /* Tema Terang Modern */
+            --bg-color: #f6f8fa;
+            --card-bg-color: rgba(255, 255, 255, 0.65);
+            --search-bg-color: #ffffff;
+            --primary-text-color: #24292f;
+            --secondary-text-color: #57606a;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --shadow-color: rgba(108, 122, 137, 0.15);
+            --accent-gradient: linear-gradient(135deg, #0969da 0%, #218bff 100%);
+            --accent-color-1: #0969da;
+            --accent-color-2: #d73a49;
+            --highlight-gradient: linear-gradient(135deg, hsla(212, 92%, 45%, 0.85) 0%, hsla(210, 100%, 56%, 0.85) 100%);
+        }
 
+        /* === Scrollbar Styling === */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; border: 2px solid var(--bg-color); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-color-1); }
+
+        /* === Body & Aurora Background === */
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-color);
             color: var(--primary-text-color);
             margin: 0;
-            padding: 30px;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            line-height: 1.6;
+            line-height: 1.7;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .header-container { text-align: center; margin-bottom: 50px; }
-        h1 {
-            background: var(--accent-gradient);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        h2 { color: var(--secondary-text-color); font-size: 1.2em; font-weight: 300; margin-top: 5px; letter-spacing: 0.5px; }
-
-        .schedule-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 30px; width: 100%; max-width: 1900px;
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            background: var(--bg-color);
         }
 
+        body::after {
+            content: '';
+            position: fixed;
+            width: 60vmax;
+            height: 60vmax;
+            top: -30vmax;
+            right: -30vmax;
+            background-image: radial-gradient(circle, var(--accent-color-1), transparent 70%);
+            opacity: 0.2;
+            z-index: -1;
+            animation: rotateBackground 25s linear infinite;
+        }
+
+        @keyframes rotateBackground {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* === Theme Toggle Button === */
+        #theme-toggle-button {
+            position: absolute; top: 30px; right: 40px;
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            border-radius: 50%; width: 45px; height: 45px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            transition: all 0.3s ease; z-index: 10;
+        }
+        #theme-toggle-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px var(--shadow-color);
+            border-color: var(--accent-color-1);
+        }
+        #theme-toggle-button svg { width: 20px; height: 20px; fill: var(--primary-text-color); transition: fill 0.3s ease; }
+        .moon-icon { display: block; } .sun-icon { display: none; }
+        html.light .moon-icon { display: none; } html.light .sun-icon { display: block; }
+
+        /* === Header & Real-time Clock === */
+        .header-container { text-align: center; width: 100%; max-width: 700px; margin-bottom: 50px; }
+        h1 { background: var(--accent-gradient); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; font-size: 2.8em; }
+        h2 { color: var(--secondary-text-color); font-size: 1.1em; font-weight: 400; margin-top: -10px; letter-spacing: 0.5px; }
+
+        #real-time-container {
+            margin-top: 30px; padding: 18px 30px;
+            background-color: var(--card-bg-color);
+            backdrop-filter: blur(10px);
+            border-radius: 16px; border: 1px solid var(--border-color);
+            display: inline-block; box-shadow: 0 4px 20px var(--shadow-color);
+            min-width: 320px; transition: all 0.3s ease;
+        }
+        #current-day-display { font-size: 1em; font-weight: 400; color: var(--secondary-text-color); margin-bottom: 5px; }
+        #clock { font-size: 2.2em; font-weight: 600; color: var(--primary-text-color); letter-spacing: 1.5px; }
+
+        /* === Search Bar === */
+        #search-container { margin-top: 30px; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; }
+        #search-bar {
+            width: 100%; padding: 15px 25px;
+            background-color: var(--search-bg-color);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(5px);
+            border-radius: 12px; color: var(--primary-text-color);
+            font-family: 'Poppins', sans-serif; font-size: 1em; transition: all 0.3s ease;
+        }
+        #search-bar:focus { outline: none; border-color: var(--accent-color-1); box-shadow: 0 0 15px 2px rgba(88, 166, 255, 0.3); }
+        #search-bar::placeholder { color: var(--secondary-text-color); }
+
+        /* === Schedule Grid Layout === */
+        .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 35px; width: 100%; max-width: 2000px; }
+
+        /* === Day Card Styling (Glassmorphism) === */
         .day-card {
             background-color: var(--card-bg-color);
-            border-radius: 20px; border: 1px solid var(--border-color);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-radius: 24px; border: 1px solid var(--border-color);
+            overflow: hidden; box-shadow: 0 8px 32px 0 var(--shadow-color);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        .day-card:hover { transform: translateY(-8px); border-color: var(--accent-glow); box-shadow: 0 0 30px var(--accent-glow); }
-
-        .day-header {
-            background: var(--accent-gradient); color: white;
-            padding: 18px 25px; font-size: 1.6em; font-weight: 600; text-align: center;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        .day-card:hover { transform: translateY(-10px); box-shadow: 0 12px 40px -5px var(--shadow-color); }
+        .current-day {
+            border-color: var(--accent-color-1);
+            box-shadow: 0 0 25px rgba(88, 166, 255, 0.5), 0 0 45px rgba(88, 166, 255, 0.3);
+            transform: translateY(-5px) scale(1.02);
         }
 
-        .schedule-items { padding: 15px 0; }
+        /* === Current Lesson Highlight === */
+        .current-lesson {
+            background: var(--highlight-gradient);
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            margin: 8px 5px !important;
+        }
+        .current-lesson .subject, .current-lesson .time, .current-lesson .teacher {
+            color: white !important;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .current-lesson .icon svg { fill: white !important; }
+
+        .day-header { background: var(--accent-gradient); color: white; padding: 20px 25px; font-size: 1.5em; font-weight: 600; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.25); }
+        .schedule-items { padding: 15px 10px; }
         .schedule-item {
-            padding: 18px 25px; border-bottom: 1px solid var(--border-color);
-            display: flex; gap: 20px; align-items: center;
+            padding: 16px 20px; border-bottom: 1px solid var(--border-color); display: flex;
+            gap: 20px; align-items: center; transition: all 0.3s ease-in-out;
+            margin: 0 10px 8px 10px; border-radius: 16px; border: 1px solid transparent;
         }
         .schedule-items > div:last-child { border-bottom: none; }
 
-        .schedule-item .icon { flex-shrink: 0; }
-        .schedule-item .icon svg { width: 24px; height: 24px; fill: var(--accent-color-1); }
+        .go-home-item .teacher { font-style: normal; opacity: 0.8; font-weight: 300; }
+        .go-home-item .icon svg { fill: var(--accent-color-1) !important; }
 
+        .schedule-item .icon { flex-shrink: 0; }
+        .schedule-item .icon svg { width: 24px; height: 24px; fill: var(--accent-color-1); transition: fill 0.3s ease; }
         .schedule-item .details { display: flex; flex-direction: column; width: 100%; }
         .time-subject-wrapper { display: flex; justify-content: space-between; align-items: flex-start; }
-        .schedule-item .time { font-weight: 600; color: var(--primary-text-color); font-size: 1em; text-align: right; flex-shrink: 0; }
+        .schedule-item .time { font-weight: 500; color: var(--primary-text-color); font-size: 1em; text-align: right; flex-shrink: 0; }
         .schedule-item .subject { font-weight: 600; font-size: 1.1em; color: var(--primary-text-color); }
-        .schedule-item .teacher, .schedule-item .jp-info { font-size: 0.9em; color: var(--secondary-text-color); font-weight: 300; }
-        .schedule-item .jp-info { text-align: right; }
+        .schedule-item .teacher { font-size: 0.9em; color: var(--secondary-text-color); font-weight: 400; }
 
-        /* Item Type Variations */
-        .break-item { background-color: var(--break-bg-color); }
-        .break-item .subject { color: var(--accent-color-2); font-style: italic; }
-        .break-item .icon svg { fill: var(--accent-color-2); }
-        
-        .event-item { background-color: var(--event-bg-color); }
-        .event-item .subject { color: var(--secondary-text-color); font-style: italic; font-weight: 400; }
-        .event-item .icon svg { fill: var(--secondary-text-color); }
+        .break-item .subject, .event-item .subject { color: var(--accent-color-2); }
+        .break-item .icon svg, .event-item .icon svg { fill: var(--accent-color-2); }
 
-        footer { margin-top: 50px; color: var(--secondary-text-color); font-size: 0.9em; text-align: center; font-weight: 300; }
+        .holiday-card { display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px; height: 100%; min-height: 200px; flex-direction: column; gap: 15px; }
+        .holiday-card .icon svg { width: 48px; height: 48px; fill: var(--accent-color-1); }
+        .holiday-card .subject { font-size: 1.5em; color: var(--primary-text-color); font-weight: 500; }
 
+        /* === Footer === */
+        footer { margin-top: 60px; text-align: center; }
+        footer p { color: var(--secondary-text-color); font-size: 0.9em; font-weight: 400; }
+
+        /* === Responsive Design === */
         @media (max-width: 768px) {
-            body { padding: 20px; }
-            h1 { font-size: 2.2em; }
-            h2 { font-size: 1em; }
-            .schedule-grid { grid-template-columns: 1fr; }
-            .time-subject-wrapper { flex-direction: column; align-items: flex-start; gap: 4px; }
-            .schedule-item .time { order: -1; font-size: 0.9em; color: var(--secondary-text-color); }
+            body { padding: 25px; }
+            h1 { font-size: 2.4em; } h2 { font-size: 1em; }
+            #theme-toggle-button { top: 20px; right: 20px; width: 42px; height: 42px; }
+            #theme-toggle-button svg { width: 18px; height: 18px; }
+            .schedule-grid { grid-template-columns: 1fr; gap: 25px; }
+            .time-subject-wrapper { flex-direction: column; align-items: flex-start; gap: 5px; }
+            .schedule-item .time { order: -1; font-size: 0.85em; color: var(--secondary-text-color); font-weight: 500; }
+            .schedule-item { margin: 0 5px 8px 5px; padding: 15px; }
         }
     </style>
 </head>
 <body>
+    <button id="theme-toggle-button" aria-label="Toggle theme">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.64 5.64c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41L5.64 2.81c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l1.41 1.42zm12.72 12.72c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41l-1.41-1.42c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l1.41 1.42zM4.22 18.36c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41l-1.41-1.42c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l1.41 1.42zm14.14-14.14c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41l-1.41-1.42c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l1.41 1.42z"/></svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.64-.11 2.41-.31-2.27-1.3-3.84-3.69-3.84-6.42C10.57 9.1 14.2 4.08 19.34 3.03 17.39 3 14.74 3 12 3z"/></svg>
+    </button>
+    
     <header class="header-container">
         <h1>Jadwal Pelajaran Kelas X TE 2</h1>
         <h2>SMK Negeri 1 Semarang - Semester Gasal TA 2025/2026</h2>
+        <div id="real-time-container">
+            <div id="current-day-display">Memuat...</div>
+            <div id="clock">00:00:00</div>
+        </div>
+        <div id="search-container">
+            <input type="text" id="search-bar" placeholder="Cari pelajaran atau guru...">
+        </div>
     </header>
 
     <main class="schedule-grid">
-        <!-- SVG Icons Definition -->
         <svg width="0" height="0" style="display:none;">
-            <symbol id="icon-book" viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></symbol>
-            <symbol id="icon-coffee" viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.9 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></symbol>
-            <symbol id="icon-flag" viewBox="0 0 24 24"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z"/></symbol>
-            <symbol id="icon-clock" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></symbol>
-            <symbol id="icon-mosque" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 7h2v5h-2zm0 6h2v2h-2z"/></symbol>
+            <symbol id="icon-home" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol>
+            <symbol id="icon-book" viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></symbol><symbol id="icon-coffee" viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.9 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></symbol><symbol id="icon-flag" viewBox="0 0 24 24"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z"/></symbol><symbol id="icon-clock" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></symbol><symbol id="icon-mosque" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 7h2v5h-2zm0 6h2v2h-2z"/></symbol><symbol id="icon-celebrate" viewBox="0 0 24 24"><path d="M12 22s8-4.5 8-10V5L12 2 4 5v7c0 5.5 8 10 8 10zm0-17.5l6 2.25V12c0 3.5-4 7.5-6 8.5-2-1-6-5-6-8.5V4.75l6-2.25z"/></symbol>
         </svg>
-
-        <!-- Senin -->
-        <article class="day-card">
+        
+        <article class="day-card" data-day="Senin">
             <h3 class="day-header">Senin</h3>
             <div class="schedule-items">
-                <div class="schedule-item event-item"><div class="icon"><svg><use xlink:href="#icon-flag"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Upacara Bendera</div><div class="time">07.00 - 07.45</div></div><div class="jp-info">JP ke-1</div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">07.45 - 09.15</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div><div class="jp-info">JP ke-2 & 3</div></div></div>
-                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">09.30 - 10.15</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div><div class="jp-info">JP ke-4</div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">10.15 - 11.45</div></div><div class="teacher">Abdul Muin, S.Pd.I</div><div class="jp-info">JP ke-5 & 6</div></div></div>
-                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">12.15 - 13.00</div></div><div class="teacher">Abdul Muin, S.Pd.I</div><div class="jp-info">JP ke-7</div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Inggris</div><div class="time">13.00 - 15.15</div></div><div class="teacher">Sri Eny Sumiarti L.E.K, S.Pd, M.Si.</div><div class="jp-info">JP ke-8, 9 & 10</div></div></div>
+                <div class="schedule-item event-item" data-time="07:00-07:45"><div class="icon"><svg><use xlink:href="#icon-flag"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Upacara Bendera</div><div class="time">07.00 - 07.45</div></div></div></div>
+                <div class="schedule-item" data-time="07:45-09:15"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">07.45 - 09.15</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div></div></div>
+                <div class="schedule-item break-item" data-time="09:15-09:30"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div>
+                <div class="schedule-item" data-time="09:30-10:15"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">09.30 - 10.15</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div></div></div>
+                <div class="schedule-item" data-time="10:15-11:45"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">10.15 - 11.45</div></div><div class="teacher">Abdul Muin, S.Pd.I</div></div></div>
+                <div class="schedule-item break-item" data-time="11:45-12:15"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div>
+                <div class="schedule-item" data-time="12:15-13:00"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">12.15 - 13.00</div></div><div class="teacher">Abdul Muin, S.Pd.I</div></div></div>
+                <div class="schedule-item" data-time="13:00-15:00"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Inggris</div><div class="time">13.00 - 15.00</div></div><div class="teacher">Sri Eny Sumiarti L.E.K, S.Pd, M.Si.</div></div></div>
+                <div class="schedule-item event-item" data-time="15:00-15:15"><div class="icon"><svg><use xlink:href="#icon-flag"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bersih-bersih</div><div class="time">15.00 - 15.15</div></div></div></div>
+                <div class="schedule-item go-home-item" data-time="15:15"><div class="icon"><svg><use xlink:href="#icon-home"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Waktu Pulang</div><div class="time">15.15</div></div><div class="teacher">Hati-hati di jalan!</div></div></div>
             </div>
         </article>
 
-        <!-- Selasa -->
-        <article class="day-card">
-            <h3 class="day-header">Selasa</h3>
-            <div class="schedule-items">
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Inggris</div><div class="time">07.00 - 08.30</div></div><div class="teacher">Sri Eny Sumiarti L.E.K, S.Pd, M.Si.</div><div class="jp-info">JP ke-1 & 2</div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Indonesia</div><div class="time">08.30 - 09.15</div></div><div class="teacher">Dra. Harmiati Erstiningrum</div><div class="jp-info">JP ke-3</div></div></div>
-                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Indonesia</div><div class="time">09.30 - 11.00</div></div><div class="teacher">Dra. Harmiati Erstiningrum</div><div class="jp-info">JP ke-4 & 5</div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">11.00 - 11.45</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div><div class="jp-info">JP ke-6</div></div></div>
-                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">12.15 - 13.00</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div><div class="jp-info">JP ke-7</div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Matematika</div><div class="time">13.00 - 15.15</div></div><div class="teacher">Kusriyantini, S.Pd</div><div class="jp-info">JP ke-8, 9 & 10</div></div></div>
-            </div>
-        </article>
+        <article class="day-card" data-day="Selasa"><h3 class="day-header">Selasa</h3><div class="schedule-items"><div class="schedule-item" data-time="07:00-08:30"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Inggris</div><div class="time">07.00 - 08.30</div></div><div class="teacher">Sri Eny Sumiarti L.E.K, S.Pd, M.Si.</div></div></div><div class="schedule-item" data-time="08:30-09:15"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Indonesia</div><div class="time">08.30 - 09.15</div></div><div class="teacher">Dra. Harmiati Erstiningrum</div></div></div><div class="schedule-item break-item" data-time="09:15-09:30"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div><div class="schedule-item" data-time="09:30-11:00"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Indonesia</div><div class="time">09.30 - 11.00</div></div><div class="teacher">Dra. Harmiati Erstiningrum</div></div></div><div class="schedule-item" data-time="11:00-11:45"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">11.00 - 11.45</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div></div></div><div class="schedule-item break-item" data-time="11:45-12:15"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div><div class="schedule-item" data-time="12:15-13:00"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">12.15 - 13.00</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div></div></div><div class="schedule-item" data-time="13:00-15:00"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Matematika</div><div class="time">13.00 - 15.00</div></div><div class="teacher">Kusriyantini, S.Pd</div></div></div><div class="schedule-item event-item" data-time="15:00-15:15"><div class="icon"><svg><use xlink:href="#icon-flag"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bersih-bersih</div><div class="time">15.00 - 15.15</div></div></div></div><div class="schedule-item go-home-item" data-time="15:15"><div class="icon"><svg><use xlink:href="#icon-home"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Waktu Pulang</div><div class="time">15.15</div></div><div class="teacher">Hati-hati di jalan!</div></div></div></div></article>
+        <article class="day-card" data-day="Rabu"><h3 class="day-header">Rabu</h3><div class="schedule-items"><div class="schedule-item" data-time="07:00-08:30"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Sejarah Indonesia</div><div class="time">07.00 - 08.30</div></div><div class="teacher">Saydah Ak'la, S.Pd.</div></div></div><div class="schedule-item" data-time="08:30-09:15"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">08.30 - 09.15</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div></div></div><div class="schedule-item break-item" data-time="09:15-09:30"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div><div class="schedule-item" data-time="09:30-10:15"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">09.30 - 10.15</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div></div></div><div class="schedule-item" data-time="10:15-11:45"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">10.15 - 11.45</div></div><div class="teacher">Abdul Muin, S.Pd.I</div></div></div><div class="schedule-item break-item" data-time="11:45-12:15"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div><div class="schedule-item" data-time="12:15-13:00"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">12.15 - 13.00</div></div><div class="teacher">Abdul Muin, S.Pd.I</div></div></div><div class="schedule-item" data-time="13:00-15:00"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">13.00 - 15.00</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div></div></div><div class="schedule-item event-item" data-time="15:00-15:15"><div class="icon"><svg><use xlink:href="#icon-flag"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bersih-bersih</div><div class="time">15.00 - 15.15</div></div></div></div><div class="schedule-item go-home-item" data-time="15:15"><div class="icon"><svg><use xlink:href="#icon-home"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Waktu Pulang</div><div class="time">15.15</div></div><div class="teacher">Hati-hati di jalan!</div></div></div></div></article>
+        <article class="day-card" data-day="Kamis"><h3 class="day-header">Kamis</h3><div class="schedule-items"><div class="schedule-item" data-time="07:00-09:15"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Indonesia</div><div class="time">07.00 - 09.15</div></div><div class="teacher">Dra. Harmiati Erstiningrum</div></div></div><div class="schedule-item break-item" data-time="09:15-09:30"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div><div class="schedule-item" data-time="09:30-11:45"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Inggris</div><div class="time">09.30 - 11.45</div></div><div class="teacher">Sri Eny Sumiarti L.E.K, S.Pd, M.Si.</div></div></div><div class="schedule-item break-item" data-time="11:45-12:15"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div><div class="schedule-item" data-time="12:15-15:00"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Matematika</div><div class="time">12.15 - 15.00</div></div><div class="teacher">Kusriyantini, S.Pd</div></div></div><div class="schedule-item event-item" data-time="15:00-15:15"><div class="icon"><svg><use xlink:href="#icon-flag"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bersih-bersih</div><div class="time">15.00 - 15.15</div></div></div></div><div class="schedule-item go-home-item" data-time="15:15"><div class="icon"><svg><use xlink:href="#icon-home"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Waktu Pulang</div><div class="time">15.15</div></div><div class="teacher">Hati-hati di jalan!</div></div></div></div></article>
 
-        <!-- Rabu -->
-        <article class="day-card">
-            <h3 class="day-header">Rabu</h3>
+        <article class="day-card" data-day="Jumat">
+            <h3 class="day-header">Jumat</h3>
             <div class="schedule-items">
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Sejarah Indonesia</div><div class="time">07.00 - 08.30</div></div><div class="teacher">Saydah Ak'la, S.Pd.</div><div class="jp-info">JP ke-1 & 2</div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">08.30 - 09.15</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div><div class="jp-info">JP ke-3</div></div></div>
-                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Pancasila</div><div class="time">09.30 - 10.15</div></div><div class="teacher">Herning Susi Nugrahani, S.Pd</div><div class="jp-info">JP ke-4</div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">10.15 - 11.45</div></div><div class="teacher">Abdul Muin, S.Pd.I</div><div class="jp-info">JP ke-5 & 6</div></div></div>
-                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pend. Agama</div><div class="time">12.15 - 13.00</div></div><div class="teacher">Abdul Muin, S.Pd.I</div><div class="jp-info">JP ke-7</div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">13.00 - 15.15</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div><div class="jp-info">JP ke-8, 9 & 10</div></div></div>
+                <div class="schedule-item event-item" data-time="07:00-08:00"><div class="icon"><svg><use xlink:href="#icon-clock"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Sesi Belum Terjadwal</div><div class="time">07.00 - 08.00</div></div></div></div>
+                <div class="schedule-item" data-time="08:00-09:20"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Sejarah Indonesia</div><div class="time">08.00 - 09.20</div></div><div class="teacher">Saydah Ak'la, S.Pd.</div></div></div>
+                <div class="schedule-item break-item" data-time="09:20-09:40"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.20 - 09.40</div></div></div></div>
+                <div class="schedule-item" data-time="09:40-11:40"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">09.40 - 11.40</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div></div></div>
+                <div class="schedule-item break-item" data-time="11:40-12:30"><div class="icon"><svg><use xlink:href="#icon-mosque"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">sholat Jumat</div><div class="time">11.40 - 12.30</div></div></div></div>
+                <div class="schedule-item go-home-item" data-time="12:30"><div class="icon"><svg><use xlink:href="#icon-home"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Waktu Pulang</div><div class="time">12.30</div></div><div class="teacher">Selamat berakhir pekan! .(waktu pulang jika tidak ada kegiatan Pramuka)</div></div></div>
+                <div class="schedule-item go-home-item" data-time="15:00"><div class="icon"><svg><use xlink:href="#icon-home"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Pulang</div><div class="time">15.00</div></div><div class="teacher">waktu pulang jika ada kegiatan Pramuka.</div></div></div>
             </div>
         </article>
         
-        <!-- Kamis -->
-        <article class="day-card">
-            <h3 class="day-header">Kamis</h3>
-            <div class="schedule-items">
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Indonesia</div><div class="time">07.00 - 09.15</div></div><div class="teacher">Dra. Harmiati Erstiningrum</div><div class="jp-info">JP ke-1, 2 & 3</div></div></div>
-                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.15 - 09.30</div></div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Bhs. Inggris</div><div class="time">09.30 - 11.45</div></div><div class="teacher">Sri Eny Sumiarti L.E.K, S.Pd, M.Si.</div><div class="jp-info">JP ke-4, 5 & 6</div></div></div>
-                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-2</div><div class="time">11.45 - 12.15</div></div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Matematika</div><div class="time">12.15 - 15.15</div></div><div class="teacher">Kusriyantini, S.Pd</div><div class="jp-info">JP ke-7, 8, 9 & 10</div></div></div>
-            </div>
-        </article>
-
-        <!-- Jumat -->
-        <article class="day-card">
-            <h3 class="day-header">Jumat</h3>
-            <div class="schedule-items">
-                <div class="schedule-item event-item"><div class="icon"><svg><use xlink:href="#icon-clock"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">data not found!</div><div class="time">07.00 - 08.00</div></div><div class="jp-info">JP ke-1</div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Sejarah Indonesia</div><div class="time">08.00 - 09.20</div></div><div class="teacher">Saydah Ak'la, S.Pd.</div><div class="jp-info">JP ke-2 & 3</div></div></div>
-                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-coffee"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Istirahat ke-1</div><div class="time">09.20 - 09.40</div></div></div></div>
-                <div class="schedule-item"><div class="icon"><svg><use xlink:href="#icon-book"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">Ilmu Pengetahuan Alam dan Sosial</div><div class="time">09.40 - 11.40</div></div><div class="teacher">Lukas Yudi Setiawan, S.T.</div><div class="jp-info">JP ke-4, 5 & 6</div></div></div>
-                <div class="schedule-item break-item"><div class="icon"><svg><use xlink:href="#icon-mosque"></use></svg></div><div class="details"><div class="time-subject-wrapper"><div class="subject">sholat Jumat</div><div class="time">11.40 - 12.30</div></div></div></div>
-            </div>
-        </article>
+        <article class="day-card" data-day="Sabtu"><h3 class="day-header">Sabtu</h3><div class="schedule-items"><div class="holiday-card"><div class="icon"><svg><use xlink:href="#icon-celebrate"></use></svg></div><div class="subject">Hari Libur</div></div></div></article>
+        <article class="day-card" data-day="Minggu"><h3 class="day-header">Minggu</h3><div class="schedule-items"><div class="holiday-card"><div class="icon"><svg><use xlink:href="#icon-celebrate"></use></svg></div><div class="subject">Hari Libur</div></div></div></article>
     </main>
 
     <footer>
+        <p>jika menemukan bug atau kesalahan dalam penulisan informasi silahkan hubungi developer!</p>
         <p>&copy; 2025 A.H 5.1 all rights reserved.</p>
     </footer>
 
+    <!-- Script tidak diubah, karena fungsinya sudah bagus dan modern -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // === BAGIAN SELEKSI ELEMEN ===
+            const themeToggleButton = document.getElementById('theme-toggle-button');
+            const htmlElement = document.documentElement;
+            const clockElement = document.getElementById('clock');
+            const dayDisplayElement = document.getElementById('current-day-display');
+            const dayCards = document.querySelectorAll('.day-card');
+            const searchBar = document.getElementById('search-bar');
+            
+            const dayMapping = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+            // === BAGIAN FUNGSI TEMA ===
+            const applyTheme = (theme) => {
+                htmlElement.classList.toggle('light', theme === 'light');
+            };
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            applyTheme(savedTheme);
+            themeToggleButton.addEventListener('click', () => {
+                const newTheme = htmlElement.classList.contains('light') ? 'dark' : 'light';
+                applyTheme(newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+
+            // === FUNGSI UTAMA (JAM & JADWAL) YANG TELAH DIPERBAIKI ===
+            function updateTimeAndSchedule() {
+                const now = new Date();
+                
+                // 1. Update Tampilan Jam & Tanggal
+                dayDisplayElement.textContent = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                clockElement.textContent = now.toLocaleTimeString('id-ID', { hour12: false });
+                
+                // 2. Tentukan Kartu Hari Ini
+                const currentDayName = dayMapping[now.getDay()];
+                let currentDayCard = null;
+                dayCards.forEach(card => {
+                    const isCurrentDay = card.dataset.day === currentDayName;
+                    card.classList.toggle('current-day', isCurrentDay);
+                    if (isCurrentDay) {
+                        currentDayCard = card;
+                    }
+                });
+
+                // 3. Reset Highlight Pelajaran Sebelumnya
+                const previousLesson = document.querySelector('.schedule-item.current-lesson');
+                if (previousLesson) {
+                    previousLesson.classList.remove('current-lesson');
+                }
+
+                // 4. Logika Baru untuk Highlight Pelajaran/Kejadian Saat Ini
+                if (currentDayCard) {
+                    const scheduleItems = currentDayCard.querySelectorAll('.schedule-item[data-time]');
+                    
+                    for (const item of scheduleItems) {
+                        const timeString = item.dataset.time;
+                        let isActive = false;
+
+                        // Cek apakah rentang waktu (contoh: "08:00-09:15")
+                        if (timeString.includes('-')) {
+                            const [startTimeStr, endTimeStr] = timeString.split('-');
+                            const [startHour, startMinute] = startTimeStr.split(':').map(Number);
+                            const [endHour, endMinute] = endTimeStr.split(':').map(Number);
+                            
+                            const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour, startMinute);
+                            const endTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHour, endMinute);
+
+                            if (now >= startTime && now < endTime) {
+                                isActive = true;
+                            }
+                        } 
+                        // Cek apakah waktu tunggal (contoh: "15:15" untuk waktu pulang)
+                        else {
+                            const [startHour, startMinute] = timeString.split(':').map(Number);
+                            const startTime = new date(now.getFullYear(), now.getMonth(), now.getDate(), startHour, startMinute);
+                            // Highlight akan aktif selama 15 menit setelah waktu tunggal tercapai
+                            const endTime = new Date(startTime.getTime() + 15 * 60000); 
+
+                            if (now >= startTime && now < endTime) {
+                                isActive = true;
+                            }
+                        }
+
+                        // Terapkan highlight jika aktif dan hentikan loop
+                        if (isActive) {
+                            item.classList.add('current-lesson');
+                            break; 
+                        }
+                    }
+                }
+            }
+
+            // === BAGIAN FUNGSI PENCARIAN ===
+            function filterSchedule() {
+                const query = searchBar.value.toLowerCase().trim();
+                const allItems = document.querySelectorAll('.schedule-item');
+
+                allItems.forEach(item => {
+                    const subjectEl = item.querySelector('.subject');
+                    const teacherEl = item.querySelector('.teacher');
+                    const itemText = (subjectEl ? subjectEl.textContent.toLowerCase() : '') + ' ' + (teacherEl ? teacherEl.textContent.toLowerCase() : '');
+                    
+                    if (itemText.includes(query)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+
+            // === INISIALISASI & INTERVAL ===
+            updateTimeAndSchedule();
+            setInterval(updateTimeAndSchedule, 1000); 
+            searchBar.addEventListener('input', filterSchedule);
+        });
+    </script>
 </body>
 </html>
