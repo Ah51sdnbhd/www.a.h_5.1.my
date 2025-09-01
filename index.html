@@ -59,7 +59,7 @@
 
         #theme-toggle-button {
             position: fixed;
-            bottom: 25px; /* Diubah dari top menjadi bottom */
+            bottom: 25px; 
             right: 25px;
             background-color: var(--card-bg-color);
             border: 1px solid var(--border-color);
@@ -206,12 +206,17 @@
             margin-bottom: 25px;
             opacity: 0;
             animation: slideInFromRight 0.6s ease-out forwards;
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.5s ease, margin-bottom 0.5s ease;
+            max-height: 200px; /* Atur ketinggian maksimum untuk animasi */
+            overflow: hidden;
         }
         .timeline-item:last-child { margin-bottom: 0; }
+        
         .timeline-item.filtered-out {
-            opacity: 0.3;
+            opacity: 0;
             transform: scale(0.95);
+            max-height: 0;
+            margin-bottom: 0;
         }
 
         .timeline-dot {
@@ -302,7 +307,7 @@
         </main>
         
         <footer>
-            <p>Jika menemukan bug atau kesalahan dalam penulisan informasi,nama atau gelar silakan hubungi developer!</p>
+            <p>Jika menemukan bug atau kesalahan dalam penulisan informasi,nama maupun gelar. silakan hubungi developer!</p>
             <p>&copy; 2025 A.H 5.1 all rights reserved.</p>
         </footer>
     </div>
@@ -318,7 +323,6 @@
         const dayMapping = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         let scheduleInterval;
 
-        // --- DATA JADWAL LENGKAP ---
         const scheduleData = {
             Senin: [
                 { type: 'event', time: "07:00-07:45", subject: "Upacara Bendera" },
@@ -376,11 +380,10 @@
             ],
             Sabtu: [{ type: 'holiday', subject: "Hari Libur" }],
              Minggu: [{ type: 'holiday', subject: "Hari Libur" },
-                { type: 'event', time: "19:00", subject: "tidur,besok sekolah" }
+                { type: 'event', time: "19:00", subject: "tidur,besok sekolah!!" }
              ],
         };
 
-        // --- MANAJEMEN TEMA ---
         const applyTheme = (theme) => htmlElement.classList.toggle('light', theme === 'light');
         const savedTheme = localStorage.getItem('theme') || 'dark';
         applyTheme(savedTheme);
@@ -390,7 +393,6 @@
             localStorage.setItem('theme', newTheme);
         });
 
-        // --- FUNGSI MERENDER TIMELINE ---
         function renderTimeline(day) {
             const data = scheduleData[day] || [];
             timelineContainer.innerHTML = ''; 
@@ -420,7 +422,6 @@
             updateTimeAndSchedule();
         }
 
-        // --- MANAJEMEN PEMILIH HARI ---
         dayButtons.forEach(button => {
             button.addEventListener('click', () => {
                 dayButtons.forEach(btn => btn.classList.remove('active'));
@@ -431,7 +432,6 @@
             });
         });
 
-        // --- FUNGSI PENCARIAN ---
         function filterTimeline() {
             const query = searchBar.value.toLowerCase().trim();
             const allItems = timelineContainer.querySelectorAll('.timeline-item');
@@ -449,7 +449,6 @@
         }
         searchBar.addEventListener('input', filterTimeline);
 
-        // --- FUNGSI UTAMA (JAM & SOROTAN JADWAL) ---
         function updateTimeAndSchedule() {
             const now = new Date();
             clockInfoElement.textContent = `${now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })} | ${now.toLocaleTimeString('id-ID')}`;
@@ -489,7 +488,6 @@
             }
         }
         
-        // --- INISIALISASI ---
         function init() {
             const todayName = dayMapping[new Date().getDay()];
             const todayMarkerButton = document.querySelector(`.day-button[data-day="${todayName}"]`);
