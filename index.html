@@ -58,7 +58,9 @@
         }
 
         #theme-toggle-button {
-            position: fixed; top: 25px; right: 25px;
+            position: fixed;
+            bottom: 25px; /* Diubah dari top menjadi bottom */
+            right: 25px;
             background-color: var(--card-bg-color);
             border: 1px solid var(--border-color);
             border-radius: 50%; width: 45px; height: 45px;
@@ -300,7 +302,7 @@
         </main>
         
         <footer>
-            <p>Jika menemukan bug atau kesalahan dalam penulisan informasi, silakan hubungi developer!</p>
+            <p>Jika menemukan bug atau kesalahan dalam penulisan informasi,nama atau gelar silakan hubungi developer!</p>
             <p>&copy; 2025 A.H 5.1 all rights reserved.</p>
         </footer>
     </div>
@@ -316,6 +318,7 @@
         const dayMapping = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         let scheduleInterval;
 
+        // --- DATA JADWAL LENGKAP ---
         const scheduleData = {
             Senin: [
                 { type: 'event', time: "07:00-07:45", subject: "Upacara Bendera" },
@@ -368,7 +371,7 @@
                 { type: 'break', time: "09:20-09:40", subject: "Istirahat ke-1" },
                 { type: 'lesson', time: "09:40-11:40", subject: "Ilmu Pengetahuan Alam dan Sosial", teacher: "Lukas Yudi Setiawan, S.T." },
                 { type: 'break', time: "11:40-12:30", subject: "Sholat Jumat" },
-                { type: 'home', time: "12:30", subject: "Waktu Pulang", teacher: "Selamat berakhir pekan! (Non-Pramuka)" },
+                { type: 'home', time: "12:30", subject: "Waktu Pulang (Non-Pramuka)", teacher: "Selamat berakhir pekan!" },
                 { type: 'home', time: "15:00", subject: "Pulang (Pramuka)", teacher: "Waktu pulang jika ada kegiatan Pramuka." }
             ],
             Sabtu: [{ type: 'holiday', subject: "Hari Libur" }],
@@ -377,6 +380,7 @@
              ],
         };
 
+        // --- MANAJEMEN TEMA ---
         const applyTheme = (theme) => htmlElement.classList.toggle('light', theme === 'light');
         const savedTheme = localStorage.getItem('theme') || 'dark';
         applyTheme(savedTheme);
@@ -386,6 +390,7 @@
             localStorage.setItem('theme', newTheme);
         });
 
+        // --- FUNGSI MERENDER TIMELINE ---
         function renderTimeline(day) {
             const data = scheduleData[day] || [];
             timelineContainer.innerHTML = ''; 
@@ -415,6 +420,7 @@
             updateTimeAndSchedule();
         }
 
+        // --- MANAJEMEN PEMILIH HARI ---
         dayButtons.forEach(button => {
             button.addEventListener('click', () => {
                 dayButtons.forEach(btn => btn.classList.remove('active'));
@@ -425,6 +431,7 @@
             });
         });
 
+        // --- FUNGSI PENCARIAN ---
         function filterTimeline() {
             const query = searchBar.value.toLowerCase().trim();
             const allItems = timelineContainer.querySelectorAll('.timeline-item');
@@ -442,6 +449,7 @@
         }
         searchBar.addEventListener('input', filterTimeline);
 
+        // --- FUNGSI UTAMA (JAM & SOROTAN JADWAL) ---
         function updateTimeAndSchedule() {
             const now = new Date();
             clockInfoElement.textContent = `${now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })} | ${now.toLocaleTimeString('id-ID')}`;
